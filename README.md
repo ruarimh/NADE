@@ -26,7 +26,7 @@ Below is the current analysis workflow:
 
 ## 📂 Repository Structure (planned)
 ```
-nade/
+NADE/
 ├── data/ # Example dataset (coming soon)
 ├── code/ # Analysis scripts (coming soon)
 ├── figures/ # Workflow and result figures
