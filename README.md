@@ -84,6 +84,7 @@ from src.background_amplitude import run_background_amplitude_analysis
 **See `notebooks/NADE_demo.ipynb` for a full workflow example.**
 
 We extract the date/time from Songmeter Micro filenames of the form "SMM08941_20230422_103000.wav". For other filename formats you'll have to edit parse_songmeter_bg_filename() in background_amplitude.py
+
 ---
 
 ## 📝 How to Run
