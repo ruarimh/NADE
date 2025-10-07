@@ -136,6 +136,13 @@ def run_background_amplitude_analysis(
 
     if all_results:
         final_df = pd.concat(all_results, ignore_index=True)
+
+        # Extract the output folder path
+        output_folder = os.path.dirname(output_csv_path)
+
+        # Create the folder if it doesn't exist
+        os.makedirs(output_folder, exist_ok=True)
+
         final_df.to_csv(output_csv_path, index=False)
         print(f"Background amplitudes saved to: {output_csv_path}")    
     else:

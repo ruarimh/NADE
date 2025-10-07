@@ -165,6 +165,10 @@ def run_combine_audio(
     Returns:
         pd.DataFrame: Metadata DataFrame.
     """
+
+    os.makedirs(combined_audio_path, exist_ok=True)
+    os.makedirs(output_path, exist_ok=True)
+
     # Get species names from folder names in foreground audio path if not provided
     if species_names is None:
         species_names = [name for name in os.listdir(fg_audio_path) if os.path.isdir(os.path.join(fg_audio_path, name))]
