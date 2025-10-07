@@ -83,6 +83,8 @@ from src.background_amplitude import run_background_amplitude_analysis
 
 **See `notebooks/NADE_demo.ipynb` for a full workflow example.**
 
+Or, run the code directly in Google Colab using: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ruarimh/NADE/blob/main/notebooks/NADE_demo.ipynb)
+
 We extract the date/time from Songmeter Micro filenames of the form "SMM08941_20230422_103000.wav". For other filename formats you'll have to edit parse_songmeter_bg_filename() in background_amplitude.py
 
 ---
