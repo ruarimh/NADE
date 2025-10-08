@@ -9,6 +9,8 @@ Preprint: https://doi.org/10.1101/2025.08.31.673350
 
 Dataset: https://doi.org/10.5281/zenodo.17142876
 
+CSV Dataset for replicating figures: https://doi.org/10.5281/zenodo.17289040
+
 ---
 
 ## 📊 Workflow
