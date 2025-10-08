@@ -48,7 +48,7 @@ NADE/
 
 ### 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/NADE.git
+git clone https://github.com/ruarimh/NADE.git
 cd NADE
 ```
 
