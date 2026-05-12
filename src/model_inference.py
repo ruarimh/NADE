@@ -11,8 +11,9 @@ import multiprocessing
 
 
 class DirectoryAnalyzer(DirectoryMultiProcessingAnalyzer):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, single_json_per_folder=False, **kwargs):
         super().__init__(*args, **kwargs)
+        self.single_json_per_folder = single_json_per_folder
 
         # Calculate the total size of the .wav files in the directory
         self.total_size_gb, self.num_files = self.calculate_total_wav_size()  
@@ -78,37 +79,63 @@ class DirectoryAnalyzer(DirectoryMultiProcessingAnalyzer):
     def save_files(self):
         print("Processing complete!")
 
+        if self.single_json_per_folder:
+            # Collect all detections into a dict keyed by filename (without extension)
+            all_detections = {}
+            for recording in self.directory_recordings:
+                # Remove 'common_name', 'label', and 'end_time' fields from each detection
+                simplified_detections = []
+                for detection in recording.detections:
+                    simplified_detection = {
+                        'scientific_name': detection['scientific_name'],
+                        'start_time': detection['start_time'],
+                        'confidence': detection['confidence']
+                    }
+                    simplified_detections.append(simplified_detection)
 
-        count = 0
+                simplified_detections.sort(key=lambda x: x['confidence'], reverse=True)
+                
+                # Key by the .wav filename without extension
+                filename_key = os.path.splitext(os.path.basename(recording.path))[0]
+                all_detections[filename_key] = simplified_detections
 
-        print(f"Saving {len(self.directory_recordings)} .json files...")
-        print()
-        print("The first 3 .json files are below:")
-
-        for recording in self.directory_recordings:
-            # Remove 'common_name', 'label', and 'end_time' fields from each detection
-            simplified_detections = []
-            for detection in recording.detections:
-                simplified_detection = {
-                    'scientific_name': detection['scientific_name'],
-                    'start_time': detection['start_time'],
-                    'confidence': detection['confidence']
-                }
-                simplified_detections.append(simplified_detection)
-
-            simplified_detections.sort(key=lambda x: x['confidence'], reverse=True)
-
-            # Create output JSON filename by replacing the .wav extension
-            json_filename = os.path.splitext(recording.path)[0] + '.json'
-
-            # Save the simplified detections to a .json file
+            # Save to a single JSON file named after the directory
+            json_filename = os.path.join(self.directory, os.path.basename(self.directory) + '.json')
             with open(json_filename, 'w') as json_file:
-                json.dump(simplified_detections, json_file, indent=4)
+                json.dump(all_detections, json_file, indent=4)
             
-            if count < 3:
-                print(f"Saved detections to {json_filename}")
+            print(f"Saved all detections to {json_filename}")
+        else:
+            count = 0
 
-                count += 1
+            print(f"Saving {len(self.directory_recordings)} .json files...")
+            print()
+            print("The first 3 .json files are below:")
+
+            for recording in self.directory_recordings:
+                # Remove 'common_name', 'label', and 'end_time' fields from each detection
+                simplified_detections = []
+                for detection in recording.detections:
+                    simplified_detection = {
+                        'scientific_name': detection['scientific_name'],
+                        'start_time': detection['start_time'],
+                        'confidence': detection['confidence']
+                    }
+                    simplified_detections.append(simplified_detection)
+
+                simplified_detections.sort(key=lambda x: x['confidence'], reverse=True)
+
+                # Create output JSON filename by replacing the .wav extension
+                json_filename = os.path.splitext(recording.path)[0] + '.json'
+
+                # Save the simplified detections to a .json file
+                with open(json_filename, 'w') as json_file:
+                    json.dump(simplified_detections, json_file, indent=4)
+                
+                if count < 3:
+                    print(f"Saved detections to {json_filename}")
+
+                    count += 1
 
 def run_birdnet_on_combined_audio(
     combined_audio_root,
@@ -117,7 +144,8 @@ def run_birdnet_on_combined_audio(
     is_common_name=True,
     lookup_table=None,
     min_conf=0.01,
-    skip_processing=False
+    skip_processing=False,
+    single_json_per_folder=False
 ):
     """
     Run BirdNET on all combined audio files and return a DataFrame with confidence values.
@@ -130,11 +158,15 @@ def run_birdnet_on_combined_audio(
     - lookup_table (dict): Lookup table for name conversion.
     - min_conf (float): Minimum confidence threshold.
     - skip_processing (bool): If True, skip BirdNET processing and only parse existing JSON.
+    - single_json_per_folder (bool): If True, save one JSON per folder instead of per file.
 
     Returns:
     - pd.DataFrame: DataFrame with columns ['output_filename', 'confidence', 'site_name', 'species_name']
     """
     results = []
+
+    # Set the flag on the analyzer
+    analyzer.single_json_per_folder = single_json_per_folder
 
     for site_name in os.listdir(combined_audio_root):
         site_path = os.path.join(combined_audio_root, site_name)
@@ -152,41 +184,80 @@ def run_birdnet_on_combined_audio(
                 analyzer.process()
                 analyzer.save_files()
 
-            # Parse JSON results for each .wav file
-            for file in os.listdir(species_path):
-                if file.endswith('.json'):
-                    json_path = os.path.join(species_path, file)
+            # Parse JSON results
+            if single_json_per_folder:
+                # Look for the single JSON file
+                json_filename = os.path.basename(species_path) + '.json'
+                json_path = os.path.join(species_path, json_filename)
+                if os.path.exists(json_path):
                     with open(json_path, 'r') as f:
-                        detections = json.load(f)
-
-                    confidence = 0.0
-                    for entry in detections:
-                        if is_common_name:
-                            # Convert scientific to common name if lookup_table is provided
-                            if lookup_table:
-                                common_name = convert_species(
-                                    entry['scientific_name'],
-                                    lookup_table,
-                                    "scientific_name",
-                                    "EB_english_name"
-                                )
+                        detections_dict = json.load(f)
+                    
+                    for filename_key, detections in detections_dict.items():
+                        confidence = 0.0
+                        for entry in detections:
+                            if is_common_name:
+                                # Convert scientific to common name if lookup_table is provided
+                                if lookup_table:
+                                    common_name = convert_species(
+                                        entry['scientific_name'],
+                                        lookup_table,
+                                        "scientific_name",
+                                        "EB_english_name"
+                                    )
+                                else:
+                                    common_name = entry.get('common_name', None)
+                                if common_name == species_name:
+                                    confidence = entry['confidence']
+                                    break
                             else:
-                                common_name = entry.get('common_name', None)
-                            if common_name == species_name:
-                                confidence = entry['confidence']
-                                break
-                        else:
-                            if entry['scientific_name'] == species_name:
-                                confidence = entry['confidence']
-                                break
+                                if entry['scientific_name'] == species_name:
+                                    confidence = entry['confidence']
+                                    break
 
-                    output_filename = file.replace('.json', '.wav')
-                    results.append({
-                        'output_filename': output_filename,
-                        'confidence': confidence,
-                        'site_name': site_name,
-                        'species_name': species_name
-                    })
+                        output_filename = filename_key + '.wav'
+                        results.append({
+                            'output_filename': output_filename,
+                            'confidence': confidence,
+                            'site_name': site_name,
+                            'species_name': species_name
+                        })
+            else:
+                # Parse JSON results for each .wav file
+                for file in os.listdir(species_path):
+                    if file.endswith('.json'):
+                        json_path = os.path.join(species_path, file)
+                        with open(json_path, 'r') as f:
+                            detections = json.load(f)
+
+                        confidence = 0.0
+                        for entry in detections:
+                            if is_common_name:
+                                # Convert scientific to common name if lookup_table is provided
+                                if lookup_table:
+                                    common_name = convert_species(
+                                        entry['scientific_name'],
+                                        lookup_table,
+                                        "scientific_name",
+                                        "EB_english_name"
+                                    )
+                                else:
+                                    common_name = entry.get('common_name', None)
+                                if common_name == species_name:
+                                    confidence = entry['confidence']
+                                    break
+                            else:
+                                if entry['scientific_name'] == species_name:
+                                    confidence = entry['confidence']
+                                    break
+
+                        output_filename = file.replace('.json', '.wav')
+                        results.append({
+                            'output_filename': output_filename,
+                            'confidence': confidence,
+                            'site_name': site_name,
+                            'species_name': species_name
+                        })
 
     return pd.DataFrame(results)
 
@@ -205,7 +276,8 @@ def run_model_inference(
     output_csv_path,
     n_cpus=None,
     min_conf=0.01,
-    skip_processing=False
+    skip_processing=False,
+    single_json_per_folder=False
 ):
     """
     Run BirdNET inference on combined audio and save results to CSV.
@@ -218,6 +290,7 @@ def run_model_inference(
         n_cpus (int, optional): Number of CPUs to use. Defaults to all available minus one.
         min_conf (float, optional): Minimum confidence threshold.
         skip_processing (bool, optional): If True, only parse existing JSONs.
+        single_json_per_folder (bool, optional): If True, save one JSON per folder instead of per file.
 
     Returns:
         pd.DataFrame: The resulting DataFrame.
@@ -234,7 +307,8 @@ def run_model_inference(
     analyzer = DirectoryAnalyzer(
         directory=combined_audio_folders[0],  # Will be updated per site/species
         processes=n_cpus,
-        min_conf=min_conf
+        min_conf=min_conf,
+        single_json_per_folder=single_json_per_folder
     )
 
     with open(lookup_table_path, 'r') as json_file:
@@ -247,7 +321,8 @@ def run_model_inference(
         is_common_name=True,
         lookup_table=lookup_table,
         min_conf=min_conf,
-        skip_processing=skip_processing
+        skip_processing=skip_processing,
+        single_json_per_folder=single_json_per_folder
     )
 
     df.to_csv(output_csv_path, index=False)
@@ -262,5 +337,6 @@ if __name__ == "__main__":
         output_csv_path=r"data\output\model_confidences.csv",
         n_cpus=None,
         min_conf=0.01,
-        skip_processing=False
+        skip_processing=False,
+        single_json_per_folder=True  # Set to False to save one JSON per .wav file, True to save one JSON per folder
     )
