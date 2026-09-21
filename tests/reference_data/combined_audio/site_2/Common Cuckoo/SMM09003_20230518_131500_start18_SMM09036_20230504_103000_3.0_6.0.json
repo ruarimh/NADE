@@ -1,0 +1,47 @@
+[
+    {
+        "scientific_name": "Alauda arvensis",
+        "start_time": 0.0,
+        "confidence": 0.2017550766468048
+    },
+    {
+        "scientific_name": "Tetrax tetrax",
+        "start_time": 0.0,
+        "confidence": 0.12545126676559448
+    },
+    {
+        "scientific_name": "Saxicola rubetra",
+        "start_time": 0.0,
+        "confidence": 0.11500326544046402
+    },
+    {
+        "scientific_name": "Cuculus canorus",
+        "start_time": 0.0,
+        "confidence": 0.050852034240961075
+    },
+    {
+        "scientific_name": "Melanocorypha calandra",
+        "start_time": 0.0,
+        "confidence": 0.035788483917713165
+    },
+    {
+        "scientific_name": "Coturnix coturnix",
+        "start_time": 0.0,
+        "confidence": 0.031230108812451363
+    },
+    {
+        "scientific_name": "Cygnus cygnus",
+        "start_time": 0.0,
+        "confidence": 0.02340460754930973
+    },
+    {
+        "scientific_name": "Coturnix japonica",
+        "start_time": 0.0,
+        "confidence": 0.019193271175026894
+    },
+    {
+        "scientific_name": "Emberiza calandra",
+        "start_time": 0.0,
+        "confidence": 0.016525456681847572
+    }
+]

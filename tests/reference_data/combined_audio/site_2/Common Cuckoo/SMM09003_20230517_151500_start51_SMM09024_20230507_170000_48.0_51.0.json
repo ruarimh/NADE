@@ -1,0 +1,17 @@
+[
+    {
+        "scientific_name": "Cuculus canorus",
+        "start_time": 0.0,
+        "confidence": 0.9809672236442566
+    },
+    {
+        "scientific_name": "Ninox boobook",
+        "start_time": 0.0,
+        "confidence": 0.09748249500989914
+    },
+    {
+        "scientific_name": "Strix occidentalis",
+        "start_time": 0.0,
+        "confidence": 0.0440179668366909
+    }
+]

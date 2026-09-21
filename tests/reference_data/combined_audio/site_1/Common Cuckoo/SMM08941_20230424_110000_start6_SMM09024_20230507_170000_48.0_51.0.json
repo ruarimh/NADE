@@ -1,0 +1,107 @@
+[
+    {
+        "scientific_name": "Locustella naevia",
+        "start_time": 0.0,
+        "confidence": 0.036618344485759735
+    },
+    {
+        "scientific_name": "Certhia brachydactyla",
+        "start_time": 0.0,
+        "confidence": 0.035654861479997635
+    },
+    {
+        "scientific_name": "Anthus trivialis",
+        "start_time": 0.0,
+        "confidence": 0.03015182353556156
+    },
+    {
+        "scientific_name": "Columba palumbus",
+        "start_time": 0.0,
+        "confidence": 0.027935313060879707
+    },
+    {
+        "scientific_name": "Fringilla coelebs",
+        "start_time": 0.0,
+        "confidence": 0.025451190769672394
+    },
+    {
+        "scientific_name": "Picus viridis",
+        "start_time": 0.0,
+        "confidence": 0.022930771112442017
+    },
+    {
+        "scientific_name": "Phylloscopus ibericus",
+        "start_time": 0.0,
+        "confidence": 0.017909567803144455
+    },
+    {
+        "scientific_name": "Picus sharpei",
+        "start_time": 0.0,
+        "confidence": 0.016284052282571793
+    },
+    {
+        "scientific_name": "Dryobates minor",
+        "start_time": 0.0,
+        "confidence": 0.015076782554388046
+    },
+    {
+        "scientific_name": "Hippolais polyglotta",
+        "start_time": 0.0,
+        "confidence": 0.014481029473245144
+    },
+    {
+        "scientific_name": "Streptopelia turtur",
+        "start_time": 0.0,
+        "confidence": 0.014361193403601646
+    },
+    {
+        "scientific_name": "Chloris chloris",
+        "start_time": 0.0,
+        "confidence": 0.013658781535923481
+    },
+    {
+        "scientific_name": "Emberiza calandra",
+        "start_time": 0.0,
+        "confidence": 0.013018377125263214
+    },
+    {
+        "scientific_name": "Emberiza schoeniclus",
+        "start_time": 0.0,
+        "confidence": 0.012693674303591251
+    },
+    {
+        "scientific_name": "Phylloscopus trochilus",
+        "start_time": 0.0,
+        "confidence": 0.01205462496727705
+    },
+    {
+        "scientific_name": "Curruca curruca",
+        "start_time": 0.0,
+        "confidence": 0.011958540417253971
+    },
+    {
+        "scientific_name": "Remiz pendulinus",
+        "start_time": 0.0,
+        "confidence": 0.01159476488828659
+    },
+    {
+        "scientific_name": "Emberiza citrinella",
+        "start_time": 0.0,
+        "confidence": 0.010422911494970322
+    },
+    {
+        "scientific_name": "Jynx torquilla",
+        "start_time": 0.0,
+        "confidence": 0.010402769781649113
+    },
+    {
+        "scientific_name": "Cyanistes caeruleus",
+        "start_time": 0.0,
+        "confidence": 0.010217161849141121
+    },
+    {
+        "scientific_name": "Apus apus",
+        "start_time": 0.0,
+        "confidence": 0.010109786875545979
+    }
+]

@@ -1,0 +1,37 @@
+[
+    {
+        "scientific_name": "Cuculus canorus",
+        "start_time": 0.0,
+        "confidence": 0.8122514486312866
+    },
+    {
+        "scientific_name": "Phylloscopus trochilus",
+        "start_time": 0.0,
+        "confidence": 0.021144196391105652
+    },
+    {
+        "scientific_name": "Gallinago media",
+        "start_time": 0.0,
+        "confidence": 0.01858849637210369
+    },
+    {
+        "scientific_name": "Fireworks",
+        "start_time": 0.0,
+        "confidence": 0.017173858359456062
+    },
+    {
+        "scientific_name": "Gavia arctica",
+        "start_time": 0.0,
+        "confidence": 0.013171490281820297
+    },
+    {
+        "scientific_name": "Anthus trivialis",
+        "start_time": 0.0,
+        "confidence": 0.012255731970071793
+    },
+    {
+        "scientific_name": "Emberiza schoeniclus",
+        "start_time": 0.0,
+        "confidence": 0.010689123533666134
+    }
+]

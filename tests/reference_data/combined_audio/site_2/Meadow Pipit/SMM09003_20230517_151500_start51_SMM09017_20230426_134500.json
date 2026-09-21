@@ -1,0 +1,17 @@
+[
+    {
+        "scientific_name": "Anthus pratensis",
+        "start_time": 0.0,
+        "confidence": 0.2583589255809784
+    },
+    {
+        "scientific_name": "Turdus philomelos",
+        "start_time": 0.0,
+        "confidence": 0.018492545932531357
+    },
+    {
+        "scientific_name": "Erithacus rubecula",
+        "start_time": 0.0,
+        "confidence": 0.017567483708262444
+    }
+]

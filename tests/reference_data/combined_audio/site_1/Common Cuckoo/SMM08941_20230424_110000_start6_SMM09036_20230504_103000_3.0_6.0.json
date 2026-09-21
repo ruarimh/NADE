@@ -1,0 +1,12 @@
+[
+    {
+        "scientific_name": "Cuculus canorus",
+        "start_time": 0.0,
+        "confidence": 0.985258162021637
+    },
+    {
+        "scientific_name": "Anthus trivialis",
+        "start_time": 0.0,
+        "confidence": 0.022990042343735695
+    }
+]

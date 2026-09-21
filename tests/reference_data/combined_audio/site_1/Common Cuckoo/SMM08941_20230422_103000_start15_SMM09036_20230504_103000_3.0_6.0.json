@@ -1,0 +1,32 @@
+[
+    {
+        "scientific_name": "Acanthis cabaret",
+        "start_time": 0.0,
+        "confidence": 0.5619761943817139
+    },
+    {
+        "scientific_name": "Acanthis flammea",
+        "start_time": 0.0,
+        "confidence": 0.4164595305919647
+    },
+    {
+        "scientific_name": "Turdus viscivorus",
+        "start_time": 0.0,
+        "confidence": 0.0409700833261013
+    },
+    {
+        "scientific_name": "Chloris chloris",
+        "start_time": 0.0,
+        "confidence": 0.014414966106414795
+    },
+    {
+        "scientific_name": "Spizella pallida",
+        "start_time": 0.0,
+        "confidence": 0.01197914406657219
+    },
+    {
+        "scientific_name": "Acanthis hornemanni",
+        "start_time": 0.0,
+        "confidence": 0.011882930062711239
+    }
+]

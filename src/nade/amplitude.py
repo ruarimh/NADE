@@ -28,20 +28,6 @@ def weighted_avg_amplitude(vocalization_amplitude, vocalization_time):
     # Convert back to decibels
     return 10 * np.log10(avg_linear_amplitude) if avg_linear_amplitude > 0 else -np.inf
 
-def parse_songmeter_bg_filename(filename):
-    """
-    Extract datetime from Songmeter Micro filename.
-    Returns dict with 'bg_datetime' or empty dict if parsing fails.
-    """
-    try:
-        parts = filename.split("_")
-        date_str = parts[1]
-        time_str = parts[2].split(".")[0]
-        from datetime import datetime
-        bg_datetime = datetime.strptime(date_str + time_str, "%Y%m%d%H%M%S")
-        return {'bg_datetime': bg_datetime}
-    except Exception:
-        return {}
 
 def compute_bg_rms_for_fg_bg_combos(vocalization_df, bg_audio_folder):
     """

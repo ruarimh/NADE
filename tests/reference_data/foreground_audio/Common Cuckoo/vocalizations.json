@@ -1,6 +1,6 @@
 [
 	{
-		"filename":"SMM09024_20230507_170000.wav",
+		"filename":"SMM09024_20230507_170000_48.0_51.0.wav",
 		"vocalization_type": "Song",
 		"vocalization_amplitude":[-32.304],
 		"bg_amplitude":-56.1375,
@@ -9,7 +9,7 @@
 		"max_freq":867
 	},
 	{
-		"filename":"SMM09036_20230504_103000.wav",
+		"filename":"SMM09036_20230504_103000_3.0_6.0.wav",
 		"vocalization_type":"Song",
 		"vocalization_amplitude":[-36.9054],
 		"bg_amplitude":-58.9231,

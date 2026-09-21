@@ -1,0 +1,17 @@
+[
+    {
+        "scientific_name": "Anthus pratensis",
+        "start_time": 0.0,
+        "confidence": 0.9651601314544678
+    },
+    {
+        "scientific_name": "Anthus cervinus",
+        "start_time": 0.0,
+        "confidence": 0.01264831330627203
+    },
+    {
+        "scientific_name": "Alauda arvensis",
+        "start_time": 0.0,
+        "confidence": 0.010350841097533703
+    }
+]

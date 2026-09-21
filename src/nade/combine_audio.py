@@ -4,6 +4,7 @@ import librosa
 import pandas as pd
 from tqdm import tqdm
 import soundfile as sf
+from multiprocessing import Pool, cpu_count
 
 def combine_audio(fg_audio, bg_audio, fg_sr, bg_sr, multiplier = 1):
     """
@@ -48,6 +49,42 @@ def remove_extension(filename):
     # Split the filename at the "." and take only the first part
     filename_without_extension = filename.split(".")[0]
     return filename_without_extension
+
+_FG_CLIP_ITEMS = None
+
+def init_worker(fg_clip_items):
+    global _FG_CLIP_ITEMS
+    _FG_CLIP_ITEMS = fg_clip_items
+
+
+def process_bg_clip(args):
+    bg_idx, site_name, bg_filename, bg_audio, bg_sr, multipliers_row, combined_audio_path, original_fg_amplitude = args
+    saved_clips_info = []
+
+    for fg_idx, (fg_filename, (fg_audio, fg_sr, species_name)) in enumerate(_FG_CLIP_ITEMS):
+        multiplier = multipliers_row[fg_idx]
+        combined_audio_folder = os.path.join(combined_audio_path, site_name, species_name)
+        os.makedirs(combined_audio_folder, exist_ok=True)
+
+        combined_filename = remove_extension(bg_filename) + "_" + fg_filename
+        combined_audio, new_sr = combine_audio(fg_audio, bg_audio, fg_sr, bg_sr, multiplier=multiplier)
+        output_path = os.path.join(combined_audio_folder, combined_filename)
+        sf.write(output_path, combined_audio, new_sr)
+
+        scaled_fg_amplitude = original_fg_amplitude + 20 * np.log10(multiplier)
+
+        saved_clips_info.append({
+            'bg_filename': bg_filename,
+            'fg_filename': fg_filename,
+            'species_name': species_name,
+            'site_name': site_name,
+            'output_filename': combined_filename,
+            'fg_multiplier': multiplier,
+            'scaled_fg_amplitude': scaled_fg_amplitude
+        })
+
+    return saved_clips_info
+
 
 def combine_and_save(
     fg_clips,
@@ -149,7 +186,8 @@ def run_combine_audio(
     species_names=None,
     site_names=None,
     db_range=(-80, -20),
-    original_fg_amplitude=-20
+    original_fg_amplitude=-20,
+    num_workers=None
 ):
     """
     Main function to combine foreground and background audio and save metadata.
@@ -162,6 +200,7 @@ def run_combine_audio(
         site_names (list, optional): List of site names. If None, inferred from bg_audio_path.
         db_range (tuple): Range of dB values for mixing.
         original_fg_amplitude (float): Reference amplitude for scaling.
+        num_workers (int, optional): Number of worker processes to use. Defaults to cpu_count() - 1.
     Returns:
         pd.DataFrame: Metadata DataFrame.
     """
@@ -169,14 +208,11 @@ def run_combine_audio(
     os.makedirs(combined_audio_path, exist_ok=True)
     os.makedirs(output_path, exist_ok=True)
 
-    # Get species names from folder names in foreground audio path if not provided
     if species_names is None:
         species_names = [name for name in os.listdir(fg_audio_path) if os.path.isdir(os.path.join(fg_audio_path, name))]
-    # Get site names from folders in background audio path if not provided
     if site_names is None:
         site_names = [name for name in os.listdir(bg_audio_path) if os.path.isdir(os.path.join(bg_audio_path, name))]
 
-    # Load foreground audio clips for all species
     fg_clips = {}
     for species_name in species_names:
         species_folder = os.path.join(fg_audio_path, species_name)
@@ -185,8 +221,6 @@ def run_combine_audio(
             continue
         fg_clips.update(load_foreground_audio(species_folder, [species_name]))
 
-
-    # Load background audio clips
     bg_clips = load_background_audio(bg_audio_path, site_names)
 
     bg_clip_items = list(bg_clips.items())
@@ -195,48 +229,30 @@ def run_combine_audio(
     num_bg_clips = len(bg_clip_items)
     num_fg_clips = len(fg_clip_items)
 
-    # Sample dB values uniformly between db_range
+    if num_bg_clips == 0 or num_fg_clips == 0:
+        raise ValueError("No background or foreground clips were loaded.")
+
     db_values = np.random.uniform(db_range[0], db_range[1], size=(num_bg_clips, num_fg_clips))
     multipliers = 10 ** ((db_values + abs(original_fg_amplitude)) / 20)
 
-    dfs = []
+    if num_workers is None:
+        num_workers = max(1, min(num_bg_clips, cpu_count() - 1))
+    else:
+        num_workers = max(1, min(num_workers, num_bg_clips))
 
+    tasks = []
+    for bg_idx, ((site_name, bg_filename), (bg_audio, bg_sr)) in enumerate(bg_clip_items):
+        tasks.append((bg_idx, site_name, bg_filename, bg_audio, bg_sr, multipliers[bg_idx], combined_audio_path, original_fg_amplitude))
 
-    for bg_idx, ((site_name, bg_filename), (bg_audio, bg_sr)) in tqdm(enumerate(bg_clip_items), total=num_bg_clips, desc="Processing bg_clips"):
-        for fg_idx, (fg_filename, (fg_audio, fg_sr, species_name)) in enumerate(fg_clip_items):
-            single_fg_clip = {fg_filename: (fg_audio, fg_sr, species_name)}
-            single_bg_clip = {bg_filename: (bg_audio, bg_sr)}
-            combined_audio_folder = os.path.join(combined_audio_path, site_name, species_name)
+    all_rows = []
+    with Pool(processes=num_workers, initializer=init_worker, initargs=(fg_clip_items,)) as pool:
+        for saved_clips_info in tqdm(pool.imap_unordered(process_bg_clip, tasks), total=len(tasks), desc="Processing bg_clips"):
+            all_rows.extend(saved_clips_info)
 
-            os.makedirs(combined_audio_folder, exist_ok=True)
-            temp_df = combine_and_save(
-                single_fg_clip,
-                single_bg_clip,
-                combined_audio_folder,
-                site_name=site_name,
-                multipliers=np.array([[multipliers[bg_idx, fg_idx]]])
-            )
-            temp_df['species_name'] = species_name  # Ensure column is present
+    df = pd.DataFrame(all_rows)
 
-            dfs.append(temp_df)
-
-    df = pd.concat(dfs, ignore_index=True)
-
-    # Save the DataFrame to a CSV file
     csv_output_path = os.path.join(output_path, "combined_audio_metadata.csv")
     df.to_csv(csv_output_path, index=False)
 
-    # Print total number of combined clips saved
     print(f"Total combined audio clips saved: {len(df)}")
-
-    # Print metadata confirmation
     print(f"Combined audio metadata saved to {csv_output_path}")
-
-# Example usage:
-# run_combine_audio(
-#     fg_audio_path=fg_audio_path,
-#     bg_audio_path=bg_audio_path,
-#     combined_audio_path=combined_audio_path,
-#     output_path=output_path,
-#     species_names=["Meadow Pipit", "Common Cuckoo"]
-# )

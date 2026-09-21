@@ -1,0 +1,32 @@
+[
+    {
+        "scientific_name": "Cuculus canorus",
+        "start_time": 0.0,
+        "confidence": 0.6558417081832886
+    },
+    {
+        "scientific_name": "Alauda arvensis",
+        "start_time": 0.0,
+        "confidence": 0.18658524751663208
+    },
+    {
+        "scientific_name": "Saxicola rubetra",
+        "start_time": 0.0,
+        "confidence": 0.06222878769040108
+    },
+    {
+        "scientific_name": "Tetrax tetrax",
+        "start_time": 0.0,
+        "confidence": 0.03973064571619034
+    },
+    {
+        "scientific_name": "Coturnix coturnix",
+        "start_time": 0.0,
+        "confidence": 0.016199694946408272
+    },
+    {
+        "scientific_name": "Anthus trivialis",
+        "start_time": 0.0,
+        "confidence": 0.015223503112792969
+    }
+]

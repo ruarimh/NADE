@@ -1,0 +1,52 @@
+[
+    {
+        "scientific_name": "Alauda arvensis",
+        "start_time": 0.0,
+        "confidence": 0.37073075771331787
+    },
+    {
+        "scientific_name": "Tetrax tetrax",
+        "start_time": 0.0,
+        "confidence": 0.11533406376838684
+    },
+    {
+        "scientific_name": "Saxicola rubetra",
+        "start_time": 0.0,
+        "confidence": 0.11484517902135849
+    },
+    {
+        "scientific_name": "Anthus pratensis",
+        "start_time": 0.0,
+        "confidence": 0.09516217559576035
+    },
+    {
+        "scientific_name": "Coturnix coturnix",
+        "start_time": 0.0,
+        "confidence": 0.0633595660328865
+    },
+    {
+        "scientific_name": "Emberiza calandra",
+        "start_time": 0.0,
+        "confidence": 0.02084273099899292
+    },
+    {
+        "scientific_name": "Melanocorypha calandra",
+        "start_time": 0.0,
+        "confidence": 0.020465964451432228
+    },
+    {
+        "scientific_name": "Motacilla flava",
+        "start_time": 0.0,
+        "confidence": 0.017302770167589188
+    },
+    {
+        "scientific_name": "Calandrella brachydactyla",
+        "start_time": 0.0,
+        "confidence": 0.013459334149956703
+    },
+    {
+        "scientific_name": "Anthus trivialis",
+        "start_time": 0.0,
+        "confidence": 0.01233320776373148
+    }
+]

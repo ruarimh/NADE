@@ -1,0 +1,20 @@
+[
+    {
+        "filename": "SMM09003_20230615_223000.wav",
+        "vocalization_type": "call",
+        "vocalization_amplitude": [-30.8],
+        "bg_amplitude": -71.0879,
+        "vocalization_time": [0.141],
+        "min_freq": 4262,
+		"max_freq": 6557
+    },
+    {
+        "filename": "SMM09017_20230426_134500.wav",
+        "vocalization_type": "song",
+        "vocalization_amplitude": [-36.5159],
+        "bg_amplitude":-68.2234,
+        "vocalization_time":[0.558],
+        "min_freq":4649,
+		"max_freq":8304
+    }
+]

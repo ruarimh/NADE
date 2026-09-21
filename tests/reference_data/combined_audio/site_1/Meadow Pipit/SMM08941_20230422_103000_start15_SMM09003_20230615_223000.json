@@ -1,0 +1,32 @@
+[
+    {
+        "scientific_name": "Acanthis cabaret",
+        "start_time": 0.0,
+        "confidence": 0.35060396790504456
+    },
+    {
+        "scientific_name": "Acanthis flammea",
+        "start_time": 0.0,
+        "confidence": 0.2041221708059311
+    },
+    {
+        "scientific_name": "Bombycilla garrulus",
+        "start_time": 0.0,
+        "confidence": 0.03569865971803665
+    },
+    {
+        "scientific_name": "Turdus viscivorus",
+        "start_time": 0.0,
+        "confidence": 0.033229924738407135
+    },
+    {
+        "scientific_name": "Chloris chloris",
+        "start_time": 0.0,
+        "confidence": 0.02020774781703949
+    },
+    {
+        "scientific_name": "Acanthis hornemanni",
+        "start_time": 0.0,
+        "confidence": 0.010069827549159527
+    }
+]

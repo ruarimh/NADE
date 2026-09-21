@@ -1,0 +1,32 @@
+[
+    {
+        "scientific_name": "Anthus pratensis",
+        "start_time": 0.0,
+        "confidence": 0.8782973289489746
+    },
+    {
+        "scientific_name": "Anthus furcatus",
+        "start_time": 0.0,
+        "confidence": 0.018516413867473602
+    },
+    {
+        "scientific_name": "Serpophaga griseicapilla",
+        "start_time": 0.0,
+        "confidence": 0.016475707292556763
+    },
+    {
+        "scientific_name": "Tetrax tetrax",
+        "start_time": 0.0,
+        "confidence": 0.014552337117493153
+    },
+    {
+        "scientific_name": "Anthus cervinus",
+        "start_time": 0.0,
+        "confidence": 0.013180550187826157
+    },
+    {
+        "scientific_name": "Machetornis rixosa",
+        "start_time": 0.0,
+        "confidence": 0.01265420950949192
+    }
+]

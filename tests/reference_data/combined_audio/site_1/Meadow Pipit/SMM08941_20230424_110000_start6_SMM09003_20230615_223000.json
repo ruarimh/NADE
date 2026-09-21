@@ -1,0 +1,57 @@
+[
+    {
+        "scientific_name": "Anthus pratensis",
+        "start_time": 0.0,
+        "confidence": 0.7787868976593018
+    },
+    {
+        "scientific_name": "Anthus trivialis",
+        "start_time": 0.0,
+        "confidence": 0.41960394382476807
+    },
+    {
+        "scientific_name": "Alcedo atthis",
+        "start_time": 0.0,
+        "confidence": 0.2235775887966156
+    },
+    {
+        "scientific_name": "Prunella modularis",
+        "start_time": 0.0,
+        "confidence": 0.0959223061800003
+    },
+    {
+        "scientific_name": "Emberiza hortulana",
+        "start_time": 0.0,
+        "confidence": 0.02131124585866928
+    },
+    {
+        "scientific_name": "Luscinia svecica",
+        "start_time": 0.0,
+        "confidence": 0.017825916409492493
+    },
+    {
+        "scientific_name": "Certhia brachydactyla",
+        "start_time": 0.0,
+        "confidence": 0.017719028517603874
+    },
+    {
+        "scientific_name": "Anthus spinoletta",
+        "start_time": 0.0,
+        "confidence": 0.0142835583537817
+    },
+    {
+        "scientific_name": "Emberiza schoeniclus",
+        "start_time": 0.0,
+        "confidence": 0.011683117598295212
+    },
+    {
+        "scientific_name": "Saxicola rubetra",
+        "start_time": 0.0,
+        "confidence": 0.010476168245077133
+    },
+    {
+        "scientific_name": "Remiz pendulinus",
+        "start_time": 0.0,
+        "confidence": 0.010057609528303146
+    }
+]
