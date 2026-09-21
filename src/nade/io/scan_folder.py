@@ -16,8 +16,28 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Supported audio extensions (matching streamlit_inference.py)
-AUDIO_EXTENSIONS = ['wav', 'WAV', 'mp3', 'MP3', 'flac', 'FLAC', 'ogg', 'OGG', 'm4a', 'M4A']
+AUDIO_EXTENSIONS = ['wav', 'mp3', 'flac', 'ogg', 'm4a']
+
+
+def infer_site_name(folder_path, file_path):
+    """Infer the site name from a file path relative to the scanned folder.
+
+    Examples:
+    - folder_path='/data/' and file_path='/data/site_1/clip.wav' -> 'site_1'
+    - folder_path='/data/site_1/' and file_path='/data/site_1/clip.wav' -> 'site_1'
+    - folder_path='/data/' and file_path='/data/clip.wav' -> 'data'
+    """
+    folder_path = os.path.normpath(folder_path)
+    file_path = os.path.normpath(file_path)
+
+    rel_path = os.path.relpath(file_path, folder_path)
+    rel_parts = Path(rel_path).parts
+
+    if len(rel_parts) >= 2:
+        return rel_parts[0]
+
+    return os.path.basename(folder_path) or os.path.basename(os.path.normpath(os.path.dirname(folder_path)))
+
 
 def scan_folder(folder_path):
     """Scan folder recursively for audio files"""
@@ -45,13 +65,31 @@ def scan_folder_with_metadata(folder_path):
 
     This function is safe to call from other Python modules and returns
     a dict similar to the JSON printed by the CLI `main()`.
+
+    The metadata includes the inferred site_name for each file, using the
+    first directory beneath the scanned root as the site identifier. For example,
+    files under /data/site_1/ will carry site_name == 'site_1'.
     """
     audio_files = scan_folder(folder_path)
+    file_metadata = []
+    site_names = []
+
+    for file_path in audio_files:
+        site_name = infer_site_name(folder_path, file_path)
+        file_metadata.append({
+            'path': file_path,
+            'site_name': site_name,
+        })
+        if site_name not in site_names:
+            site_names.append(site_name)
+
+    site_name = site_names[0] if len(site_names) == 1 else None
 
     result = {
-        'files': audio_files,
         'count': len(audio_files),
-        'folder': folder_path
+        'folder': folder_path,
+        'site_names': site_names,
+        'file_metadata': file_metadata,
     }
 
     return result
