@@ -20,6 +20,12 @@ where each entry in `file_metadata` is a dict with at least::
 The function does not modify the original/raw audio files.
 """
 
+# TODO: add option to sample same amount from each site
+# TODO: add option to sample stratified within specified time of day (default 0-24hr)
+# TODO: add option to sample stratified within specified date range (default all dates)
+# TODO: add option to sample temporally near detections 
+#   (default +- 1 hour, requires confidence threshold, requires detection csv per site, requires species name)
+
 from pathlib import Path
 import math
 import random
@@ -35,6 +41,7 @@ def sample_background_audio(
     metadata: Dict,
     model_input_length: float = 3.0,
     background_fraction: float = 0.01,
+    num_background_samples: Optional[int] = None,
     sampling_type: str = "random",
     output_folder: str = "data/background_audio",
     seed: Optional[int] = None,
@@ -46,6 +53,7 @@ def sample_background_audio(
         metadata: dictionary describing files (see module docstring)
         model_input_length: length of each sample in seconds
         background_fraction: fraction of all possible segments to sample
+        num_background_samples: exact number of background samples to generate (overrides background_fraction)
         sampling_type: one of 'random' or 'detection_based' (stub)
         output_folder: where to write sampled audio and CSV. If None,
             a `background_audio` folder next to `metadata['folder']` is used.
@@ -66,6 +74,7 @@ def sample_background_audio(
     # Determine output folder
     base_folder = Path(output_folder)
     base_folder.mkdir(parents=True, exist_ok=True)
+
 
     # Build list of candidate segments (path, site_name, start_time)
     candidates = []
@@ -101,7 +110,10 @@ def sample_background_audio(
     if total == 0:
         raise ValueError("no eligible segments found for the given model_input_length")
 
-    n_to_sample = int(round(total * float(background_fraction)))
+    if num_background_samples is not None:
+        n_to_sample = num_background_samples
+    else:
+        n_to_sample = int(round(total * float(background_fraction)))
     if n_to_sample <= 0:
         n_to_sample = 1
     if n_to_sample > total:

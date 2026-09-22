@@ -2,10 +2,8 @@
 
 from pathlib import Path
 import soundfile
-import datetime
-
+from datetime import datetime
 import pytz
-from aru_metadata_parser.utils import hex_to_time, load_metadata
 import warnings
 
 from dateutil.parser import parse as dateutil_parse

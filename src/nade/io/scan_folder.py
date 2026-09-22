@@ -4,6 +4,8 @@ Scan folder for audio files
 Returns a list of audio files found in the specified directory
 """
 
+# TODO: add date-time metadata extraction from filename
+
 import argparse
 import json
 import os
@@ -11,6 +13,7 @@ import glob
 import sys
 import logging
 from pathlib import Path
+from nade.io.aru_metadata_parser import ARUFileTimestampParser
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -74,11 +77,16 @@ def scan_folder_with_metadata(folder_path):
     file_metadata = []
     site_names = []
 
+    aru_parser = ARUFileTimestampParser()
+
+
     for file_path in audio_files:
+        aru_datetime = aru_parser.parse(file_path)
         site_name = infer_site_name(folder_path, file_path)
         file_metadata.append({
             'path': file_path,
             'site_name': site_name,
+            'datetime': aru_datetime
         })
         if site_name not in site_names:
             site_names.append(site_name)
