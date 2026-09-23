@@ -1,0 +1,2 @@
+0.0	3.0	Turdus merula_Eurasian Blackbird	0.8123
+3.0	6.0	Erithacus rubecula_European Robin	0.4411

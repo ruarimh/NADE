@@ -1,0 +1,2 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Common Name	Scientific Name	Species Code	eBird Code	Species	Confidence	File Offset (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	Begin Path
+1	Spectrogram 1	1	1.25	4.25	Common Yellowthroat	Geothlypis trichas	COYE	comyel	COYE	0.912345	1.25	500	8000	marsh.wav	/data/marsh.wav

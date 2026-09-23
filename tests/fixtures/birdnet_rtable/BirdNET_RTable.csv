@@ -1,0 +1,2 @@
+filepath,start,end,scientific_name,common_name,confidence,lat,lon,week,overlap,sensitivity,min_conf,species_list,model
+/data/rec1.wav,0.0,3.0,Turdus merula,Eurasian Blackbird,0.8123,-1,-1,-1,0.0,1.0,0.1,,BirdNET_GLOBAL_6K_V2.4_Model_FP32

@@ -1,0 +1,3 @@
+Selection	Begin Time (s)	End Time (s)	Common Name	Scientific Name	Species Code	Confidence	View	Channel	File Offset (s)	Low Freq (Hz)	High Freq (Hz)	Begin Path
+1	0.0	3.0	Eurasian Blackbird	Turdus merula	eurbla	0.8123	Spectrogram 1	1	0.0	0	15000	/data/site1/rec1.wav
+2	3.0	6.0	European Robin	Erithacus rubecula	eurrob1	0.4411	Spectrogram 1	1	3.0	0	15000	/data/site1/rec1.wav

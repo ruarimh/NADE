@@ -1,0 +1,4 @@
+filename, timestamp_s, label, logit
+site1/rec1.wav,0.00,comrav,1.23
+site1/rec1.wav,5.00,comrav,-0.40
+site1/rec2.wav,10.00,amecro,2.10

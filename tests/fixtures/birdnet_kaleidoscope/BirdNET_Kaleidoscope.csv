@@ -1,0 +1,3 @@
+INDIR,FOLDER,IN FILE,OFFSET,DURATION,scientific_name,TOP1MATCH,TOP1DIST
+/data,site1,rec1.wav,0.0,3.0,Turdus merula,Eurasian Blackbird,0.8123
+/data,site1,rec1.wav,3.0,3.0,Erithacus rubecula,European Robin,0.4411
